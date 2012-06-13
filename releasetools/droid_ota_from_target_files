@@ -347,10 +347,11 @@ def WriteFullOTAPackage(input_zip, output_zip):
 #    script.AssertOlderBuild(ts)
 
   script.Print(" ")
-  script.Print("        ___  __  __  __  __  __  __  _  _  ")
-  script.Print("       / __)(  )(  )(  \/  )(  \/  )( \/ ) ")
-  script.Print("      ( (_-. )(__)(  )    (  )    (  \  /  ")
-  script.Print("       \___/(______)(_/\/\_)(_/\/\_) (__)  ")
+  script.Print("  __    ____  _____  __  __  ____  ____  ")
+  script.Print(" (  )  (_  _)(  _  )(  )(  )(_  _)(  _ \ ")
+  script.Print("  )(__  _)(_  )(_)(  )(__)(  _)(_  )(_) )")
+  script.Print(" (____)(____)(___/\\(______)(____)(____/ ")
+  script.Print(" ")
 
 # kernel check...
 #  script.Print(" Checking Kernel Version...  ")
