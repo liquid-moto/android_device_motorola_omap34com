@@ -45,7 +45,7 @@ PRODUCT_PACKAGES += \
 
 # ICS graphics
 PRODUCT_PACKAGES += \
-	libEGL libGLESv2 libGLESv1_CM libgtest
+	libEGL libGLESv2 libGLESv1_CM
 
 # Jpeg hw encoder/decoder
 PRODUCT_PACKAGES += \
@@ -166,10 +166,10 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PREBUILT)/etc/inetd.conf:system/etc/inetd.conf \
 	$(DEVICE_PREBUILT)/etc/gps.conf:system/etc/gps.conf \
 	$(DEVICE_PREBUILT)/etc/media_profiles.xml:system/etc/media_profiles.xml \
+	$(DEVICE_PREBUILT)/etc/profile:system/etc/profile \
 	$(DEVICE_PREBUILT)/etc/powervr.ini:system/etc/powervr.ini \
 	$(DEVICE_PREBUILT)/etc/vold.fstab:system/etc/vold.fstab \
 	$(DEVICE_PREBUILT)/etc/sysctl.conf:system/etc/sysctl.conf \
-	$(DEVICE_PREBUILT)/etc/init.d/06ion:system/etc/init.d/06ion \
 	$(DEVICE_PREBUILT)/etc/init.d/12scheduler:system/etc/init.d/12scheduler \
 	$(DEVICE_PREBUILT)/etc/init.d/13kernel:system/etc/init.d/13kernel \
 	$(DEVICE_PREBUILT)/etc/init.d/14multitouch:system/etc/init.d/14multitouch \
@@ -236,14 +236,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.vold.umsdirtyratio=20 \
 	ro.usb.use_custom_service=1 \
 	ro.kernel.android.checkjni=0 \
-	ro.HOME_APP_ADJ=1 \
 	dalvik.vm.checkjni=false \
 	dev.pm.dyn_samplingrate=1 \
 	debug.enabletr=false \
 	ro.sf.lcd_density=240 \
 	ro.min_pointer_dur=10 \
 	ro.opengles.version=131072 \
-	hwui.render_dirty_regions=false \
 	wifi.interface=tiwlan0 \
 	wifi.supplicant_scan_interval=180 \
 	wifi.hotspot.ti=1 \
