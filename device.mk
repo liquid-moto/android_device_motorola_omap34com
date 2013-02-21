@@ -96,7 +96,7 @@ PRODUCT_PACKAGES += \
 	lights.omap3 usbd ping6
 
 # Apps and bin
-PRODUCT_PACKAGES += Superuser su FileManager Torch Usb GanOptimizer
+PRODUCT_PACKAGES += su Apollo Torch Usb
 
 # Live Wallpapers
 PRODUCT_PACKAGES += \
@@ -211,16 +211,17 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.com.google.gmsversion=2.3_r3 \
 	ro.kernel.android.ril=yes \
 	ro.product.multi_touch_enabled=true \
+	persist.sys.multitouch=2
 	ro.product.use_charge_counter=1 \
 	ro.media.dec.jpeg.memcap=20000000 \
 	ro.setupwizard.enable_bypass=1 \
 	ro.setupwizard.mode=OPTIONAL \
-	ro.telephony.call_ring.delay=1000 \
+	ro.telephony.call_ring.delay=500 \
 	ro.telephony.call_ring.multiple=false \
 	ro.vold.umsdirtyratio=20 \
 	ro.usb.use_custom_service=1 \
 	ro.kernel.android.checkjni=0 \
-	dalvik.vm.dexopt-flags=m=y,v=n,o=v,u=n \
+	dalvik.vm.dexopt-flags=m=y,v=n,o=v,u=y \
 	dalvik.vm.execution-mode=int:jit \
 	dalvik.vm.heapstartsize=5m \
 	dalvik.vm.heapsize=128m \
