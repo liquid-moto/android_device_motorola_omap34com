@@ -347,14 +347,14 @@ def WriteFullOTAPackage(input_zip, output_zip):
 #    script.AssertOlderBuild(ts)
 
   script.Print(" ")
-  script.Print("  __    ____  _____  __  __  ____  ____  ")
-  script.Print(" (  )  (_  _)(  _  )(  )(  )(_  _)(  _ \ ")
-  script.Print("  )(__  _)(_  )(_)(  )(__)(  _)(_  )(_) )")
-  script.Print(" (____)(____)(___/\\)(______)(____)(____/ ")
-  script.Print("          ____    ____    ____           ")
-  script.Print("         (_  _)  / ___)  (  __)          ")
-  script.Print("          _)(_  ( (___   _\\ \\            ")
-  script.Print("         (____)  \\____) (____)           ")
+  script.Print("     __    ____  _____  __  __  ____  ____  ")
+  script.Print("    (  )  (_  _)(  _  )(  )(  )(_  _)(  _ \ ")
+  script.Print("     )(__  _)(_  )(_)(  )(__)(  _)(_  )(_) )")
+  script.Print("    (____)(____)(___/\\)(______)(____)(____/")
+  script.Print("             ____    ____    ____           ")
+  script.Print("            (_  _)  / ___)  (  __)          ")
+  script.Print("             _)(_  ( (___   _\\ \\          ")
+  script.Print("            (____)  \\____) (____)          ")
   script.Print(" ")
 
 # kernel check...
@@ -370,7 +370,7 @@ def WriteFullOTAPackage(input_zip, output_zip):
   if OPTIONS.backuptool:
     script.RunBackup("backup")
 
-  script.ShowProgress(0.5, 0)
+  script.ShowProgress(0.35, 23)
 
   if OPTIONS.wipe_user_data:
     script.FormatPartition("/data")
@@ -384,15 +384,18 @@ def WriteFullOTAPackage(input_zip, output_zip):
   script.Print(" Mounting /system... ")
   script.Mount("/system")
 
+  script.ShowProgress(0.50, 35)
   script.Print("  ")
   script.Print(" Installing /system... ")
   script.UnpackPackageDir("system", "/system")
   symlinks = CopySystemFiles(input_zip, output_zip)
 
+  script.ShowProgress(0.02, 1)
   script.Print("  ")
   script.Print(" Creating Symlinks... ")
   script.MakeSymlinks(symlinks)
   
+  script.ShowProgress(0.03, 1)
   script.Print("  ")
   script.Print(" Setting Permissions... ")
   Item.GetMetadata(input_zip)
@@ -403,30 +406,27 @@ def WriteFullOTAPackage(input_zip, output_zip):
   script.SetPermissions("/data/cron", 0, 0, 0755)
   script.SetPermissions("/data/cron/root", 0, 0, 0644)
 
-  script.ShowProgress(0.2, 0)
-
   if OPTIONS.backuptool:
-    script.ShowProgress(0.2, 10)
     script.RunBackup("restore")
 
   script.RunChkKineto()
 
   script.RunVerifyCachePartitionSize()
-  
+
+  script.ShowProgress(0.40, 30)
   script.Print("  ")
   script.Print(" Finishing Installation... ")
   script.Mount("/data")
   script.RunFinalReleaseUtils()
-
-  script.ShowProgress(0.2, 10)
   
-  script.ShowProgress(0.1, 0)
   device_specific.FullOTA_InstallEnd()
 
   if OPTIONS.extra_script is not None:
     script.AppendExtra(OPTIONS.extra_script)
 
   script.UnmountAll()
+  script.Print("  ")
+  script.Print(" Installation Successful!!! ")
   script.AddToZip(input_zip, output_zip)
   WriteMetadata(metadata, output_zip)
 
