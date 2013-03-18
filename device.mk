@@ -76,8 +76,7 @@ PRODUCT_PACKAGES += \
 	libOMX.TI.JPEG.decoder \
 	libOMX.TI.ILBC.decode \
 	libOMX.TI.ILBC.encode \
-	libOMX.TI.VPP \
-#	libLCML
+	libOMX.TI.VPP
 
 # Wifi
 PRODUCT_PACKAGES += \
@@ -211,7 +210,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.com.google.gmsversion=2.3_r3 \
 	ro.kernel.android.ril=yes \
 	ro.product.multi_touch_enabled=true \
-	persist.sys.multitouch=2
+	persist.sys.multitouch=2 \
 	ro.product.use_charge_counter=1 \
 	ro.media.dec.jpeg.memcap=20000000 \
 	ro.setupwizard.enable_bypass=1 \
