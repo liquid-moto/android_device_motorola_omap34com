@@ -671,7 +671,25 @@ static char* camera_get_parameters(struct camera_device * device)
     struct legacy_camera_device *lcdev = to_lcdev(device);
     CameraParameters params(lcdev->hwif->getParameters());
 
-    
+    int width = 0, height = 0;
+    float ratio = 0.0;
+
+    params.getVideoSize(&width, &height);
+    if (width > 0 && height > 0) {
+        ratio = (height * 1.0) / width;
+        if (ratio < 0.70 && width > 640) {
+            params.setPreviewSize(720, 480);
+            params.set(CameraParameters::KEY_PREFERRED_PREVIEW_SIZE_FOR_VIDEO, "720x480");
+        } else if (width == 640) {
+            params.setPreviewSize(640, 480);
+            params.set(CameraParameters::KEY_PREFERRED_PREVIEW_SIZE_FOR_VIDEO, "640x480");
+        }
+    }
+
+    params.getPreviewSize(&width, &height);
+    if (width != lcdev->previewWidth || height != lcdev->previewHeight) {
+        camera_set_preview_window(device, lcdev->window);
+    }
 
 #ifdef LOG_FULL_PARAMS
     LOGV("%s: Parameters");

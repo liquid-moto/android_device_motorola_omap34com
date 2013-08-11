@@ -127,23 +127,23 @@ sp<MotoCameraWrapper> MotoCameraWrapper::createInstance(int cameraId)
         case DROID2:
         case DROID2WE:
         case DROIDPRO:
-			LOGI("Detected DROID device\n");
-			/* entry point of DROID driver is android::CameraHal::createInstance() */
-            motoInterface = openMotoInterface("libcamera.so", "_ZN7android9CameraHal14createInstanceEv");
+	    LOGI("Detected DROID device\n");
+		/* entry point of DROID driver is android::CameraHal::createInstance() */
+		motoInterface = openMotoInterface("libcamera.so", "_ZN7android9CameraHal14createInstanceEv");
             break;
         case CAM_SOC:
             LOGI("Detected SOC device\n");
 	        /* entry point of SOC driver is android::CameraHalSocImpl::createInstance() */
 	        motoInterface = openMotoInterface("libsoccamera.so", "_ZN7android16CameraHalSocImpl14createInstanceEv");
             break;
-		case CAM_BAYER:
+	case CAM_BAYER:
             LOGI("Detected BAYER device\n");
 	        /* entry point of Bayer driver is android::CameraHal::createInstance() */
 	        motoInterface = openMotoInterface("libbayercamera.so", "_ZN7android9CameraHal14createInstanceEv");
             break;
         case UNKNOWN:
         default:
-			LOGE("Camera type detection failed");
+	    LOGE("Camera type detection failed");
             break;
     }
 
@@ -498,8 +498,8 @@ MotoCameraWrapper::getParameters() const
     ret.set(CameraParameters::KEY_MIN_EXPOSURE_COMPENSATION, "-9");
     ret.set(CameraParameters::KEY_EXPOSURE_COMPENSATION_STEP, "0.3333333333333");
     ret.set(CameraParameters::KEY_VIDEO_FRAME_FORMAT, CameraParameters::PIXEL_FORMAT_YUV422I);
-    ret.set(CameraParameters::KEY_PREVIEW_FRAME_RATE, "24");
-    
+//    ret.set(CameraParameters::KEY_PREVIEW_FRAME_RATE, "24");
+
     /* Device specific options */
     switch (mCameraType) {
         case DROIDX:
