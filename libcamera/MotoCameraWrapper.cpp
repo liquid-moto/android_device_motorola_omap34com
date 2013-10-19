@@ -31,8 +31,7 @@ namespace android {
 
 wp<MotoCameraWrapper> MotoCameraWrapper::singleton;
 
-static bool
-deviceCardMatches(const char *device, const char *matchCard)
+static bool deviceCardMatches(const char *device, const char *matchCard)
 {
     struct v4l2_capability caps;
     int fd = ::open(device, O_RDWR);
@@ -56,8 +55,7 @@ deviceCardMatches(const char *device, const char *matchCard)
     return ret;
 }
 
-static sp<CameraHardwareInterface>
-openMotoInterface(const char *libName, const char *funcName)
+static sp<CameraHardwareInterface> openMotoInterface(const char *libName, const char *funcName)
 {
     sp<CameraHardwareInterface> interface;
     void *libHandle = ::dlopen(libName, RTLD_NOW);
@@ -77,8 +75,7 @@ openMotoInterface(const char *libName, const char *funcName)
     return interface;
 }
 
-static void
-setSocTorchMode(bool enable)
+static void setSocTorchMode(bool enable)
 {
     int fd = ::open("/sys/class/leds/torch-flash/flash_light", O_WRONLY);
     if (fd >= 0) {
@@ -128,15 +125,15 @@ sp<MotoCameraWrapper> MotoCameraWrapper::createInstance(int cameraId)
         case DROID2WE:
         case DROIDPRO:
 	    LOGI("Detected DROID device\n");
-		/* entry point of DROID driver is android::CameraHal::createInstance() */
-		motoInterface = openMotoInterface("libcamera.so", "_ZN7android9CameraHal14createInstanceEv");
+			/* entry point of DROID driver is android::CameraHal::createInstance() */
+			motoInterface = openMotoInterface("libcamera.so", "_ZN7android9CameraHal14createInstanceEv");
             break;
         case CAM_SOC:
             LOGI("Detected SOC device\n");
 	        /* entry point of SOC driver is android::CameraHalSocImpl::createInstance() */
 	        motoInterface = openMotoInterface("libsoccamera.so", "_ZN7android16CameraHalSocImpl14createInstanceEv");
             break;
-	case CAM_BAYER:
+		case CAM_BAYER:
             LOGI("Detected BAYER device\n");
 	        /* entry point of Bayer driver is android::CameraHal::createInstance() */
 	        motoInterface = openMotoInterface("libbayercamera.so", "_ZN7android9CameraHal14createInstanceEv");
@@ -180,28 +177,24 @@ MotoCameraWrapper::~MotoCameraWrapper()
     }
 }
 
-void
-MotoCameraWrapper::toggleTorchIfNeeded()
+void MotoCameraWrapper::toggleTorchIfNeeded()
 {
     if (mCameraType == CAM_SOC) {
         setSocTorchMode(mFlashMode == CameraParameters::FLASH_MODE_TORCH);
     }
 }
 
-sp<IMemoryHeap>
-MotoCameraWrapper::getPreviewHeap() const
+sp<IMemoryHeap> MotoCameraWrapper::getPreviewHeap() const
 {
     return mMotoInterface->getPreviewHeap();
 }
 
-sp<IMemoryHeap>
-MotoCameraWrapper::getRawHeap() const
+sp<IMemoryHeap> MotoCameraWrapper::getRawHeap() const
 {
     return mMotoInterface->getRawHeap();
 }
 
-void
-MotoCameraWrapper::setCallbacks(notify_callback notify_cb,
+void MotoCameraWrapper::setCallbacks(notify_callback notify_cb,
                                   data_callback data_cb,
                                   data_callback_timestamp data_cb_timestamp,
                                   void* user)
@@ -224,8 +217,7 @@ MotoCameraWrapper::setCallbacks(notify_callback notify_cb,
     mMotoInterface->setCallbacks(notify_cb, data_cb, data_cb_timestamp, this);
 }
 
-void
-MotoCameraWrapper::notifyCb(int32_t msgType, int32_t ext1, int32_t ext2, void* user)
+void MotoCameraWrapper::notifyCb(int32_t msgType, int32_t ext1, int32_t ext2, void* user)
 {
     MotoCameraWrapper *_this = (MotoCameraWrapper *) user;
     user = _this->mCbUserData;
@@ -236,8 +228,7 @@ MotoCameraWrapper::notifyCb(int32_t msgType, int32_t ext1, int32_t ext2, void* u
     _this->mNotifyCb(msgType, ext1, ext2, user);
 }
 
-void
-MotoCameraWrapper::dataCb(int32_t msgType, const sp<IMemory>& dataPtr, void* user)
+void MotoCameraWrapper::dataCb(int32_t msgType, const sp<IMemory>& dataPtr, void* user)
 {
     MotoCameraWrapper *_this = (MotoCameraWrapper *) user;
     user = _this->mCbUserData;
@@ -255,8 +246,7 @@ MotoCameraWrapper::dataCb(int32_t msgType, const sp<IMemory>& dataPtr, void* use
     }
  }
 
-void
-MotoCameraWrapper::dataCbTimestamp(nsecs_t timestamp, int32_t msgType,
+void MotoCameraWrapper::dataCbTimestamp(nsecs_t timestamp, int32_t msgType,
                                      const sp<IMemory>& dataPtr, void* user)
 {
     MotoCameraWrapper *_this = (MotoCameraWrapper *) user;
@@ -273,8 +263,7 @@ MotoCameraWrapper::dataCbTimestamp(nsecs_t timestamp, int32_t msgType,
  * data bytes. As the output format of Motorola's libcamera is static,
  * this should be fine until Motorola fixes their lib.
  */
-void
-MotoCameraWrapper::fixUpBrokenGpsLatitudeRef(const sp<IMemory>& dataPtr)
+void MotoCameraWrapper::fixUpBrokenGpsLatitudeRef(const sp<IMemory>& dataPtr)
 {
     ssize_t offset;
     size_t size;
@@ -305,114 +294,97 @@ MotoCameraWrapper::fixUpBrokenGpsLatitudeRef(const sp<IMemory>& dataPtr)
     }
 }
 
-void
-MotoCameraWrapper::enableMsgType(int32_t msgType)
+void MotoCameraWrapper::enableMsgType(int32_t msgType)
 {
     mMotoInterface->enableMsgType(msgType);
 }
 
-void
-MotoCameraWrapper::disableMsgType(int32_t msgType)
+void MotoCameraWrapper::disableMsgType(int32_t msgType)
 {
     mMotoInterface->disableMsgType(msgType);
 }
 
-bool
-MotoCameraWrapper::msgTypeEnabled(int32_t msgType)
+bool MotoCameraWrapper::msgTypeEnabled(int32_t msgType)
 {
     return mMotoInterface->msgTypeEnabled(msgType);
 }
 
-status_t
-MotoCameraWrapper::startPreview()
+status_t MotoCameraWrapper::startPreview()
 {
     return mMotoInterface->startPreview();
 }
 
-bool
-MotoCameraWrapper::useOverlay()
+bool MotoCameraWrapper::useOverlay()
 {
     return mMotoInterface->useOverlay();
 }
 
-status_t
-MotoCameraWrapper::setOverlay(const sp<Overlay> &overlay)
+status_t MotoCameraWrapper::setOverlay(const sp<Overlay> &overlay)
 {
     return mMotoInterface->setOverlay(overlay);
 }
 
-void
-MotoCameraWrapper::stopPreview()
+void MotoCameraWrapper::stopPreview()
 {
     mMotoInterface->stopPreview();
 }
 
-bool
-MotoCameraWrapper::previewEnabled()
+bool MotoCameraWrapper::previewEnabled()
 {
     return mMotoInterface->previewEnabled();
 }
 
-status_t
-MotoCameraWrapper::startRecording()
+status_t MotoCameraWrapper::startRecording()
 {
     toggleTorchIfNeeded();
     return mMotoInterface->startRecording();
 }
 
-void
-MotoCameraWrapper::stopRecording()
+void MotoCameraWrapper::stopRecording()
 {
     toggleTorchIfNeeded();
     mMotoInterface->stopRecording();
 }
 
-bool
-MotoCameraWrapper::recordingEnabled()
+bool MotoCameraWrapper::recordingEnabled()
 {
     return mMotoInterface->recordingEnabled();
 }
 
-void
-MotoCameraWrapper::releaseRecordingFrame(const sp<IMemory>& mem)
+void MotoCameraWrapper::releaseRecordingFrame(const sp<IMemory>& mem)
 {
     return mMotoInterface->releaseRecordingFrame(mem);
 }
 
-status_t
-MotoCameraWrapper::autoFocus()
+status_t MotoCameraWrapper::autoFocus()
 {
     return mMotoInterface->autoFocus();
 }
 
-status_t
-MotoCameraWrapper::cancelAutoFocus()
+status_t MotoCameraWrapper::cancelAutoFocus()
 {
     return mMotoInterface->cancelAutoFocus();
 }
 
-status_t
-MotoCameraWrapper::takePicture()
+status_t MotoCameraWrapper::takePicture()
 {
     return mMotoInterface->takePicture();
 }
 
-status_t
-MotoCameraWrapper::cancelPicture()
+status_t MotoCameraWrapper::cancelPicture()
 {
     return mMotoInterface->cancelPicture();
 }
 
-status_t
-MotoCameraWrapper::setParameters(const CameraParameters& params)
+status_t MotoCameraWrapper::setParameters(const CameraParameters& params)
 {
     CameraParameters pars(params.flatten());
     String8 oldFlashMode = mFlashMode;
     String8 sceneMode;
     status_t retval;
-    int width, height;
+//    int width, height;
     char buf[10];
-    bool isWide;
+//    bool isWide;
 
     /*
      * getInt returns -1 if the value isn't present and 0 on parse failure,
@@ -421,7 +393,15 @@ MotoCameraWrapper::setParameters(const CameraParameters& params)
     mVideoMode = pars.getInt("cam-mode") > 0;
     pars.remove("cam-mode");
 
-    pars.getPreviewSize(&width, &height);
+	/*
+	 * Try to dynamically set preview size for video
+	pars.getVideoSize(&width, &height);
+	if (width == 640) {
+		pars.set(CameraParameters::KEY_PREFERRED_PREVIEW_SIZE_FOR_VIDEO, "640x480");
+	} else {
+		pars.set(CameraParameters::KEY_PREFERRED_PREVIEW_SIZE_FOR_VIDEO, "720x480");
+	} */
+/*    pars.getPreviewSize(&width, &height);
     isWide = width == 848 && height == 480;
 
     if (isWide && !mVideoMode) {
@@ -430,7 +410,7 @@ MotoCameraWrapper::setParameters(const CameraParameters& params)
     if (mCameraType == CAM_BAYER && mVideoMode) {
         pars.setPreviewFrameRate(24);
     }
-
+*/
     sceneMode = pars.get(CameraParameters::KEY_SCENE_MODE);
     if (sceneMode != CameraParameters::SCENE_MODE_AUTO) {
         /* The lib doesn't seem to update the flash mode correctly when a scene
@@ -470,8 +450,7 @@ MotoCameraWrapper::setParameters(const CameraParameters& params)
     return retval;
 }
 
-CameraParameters
-MotoCameraWrapper::getParameters() const
+CameraParameters MotoCameraWrapper::getParameters() const
 {
     CameraParameters ret = mMotoInterface->getParameters();
 
@@ -508,6 +487,10 @@ MotoCameraWrapper::getParameters() const
         case DROIDPRO:
             /* God knows what I'm about to break here, but this should keep Droid
                cameras from crashing and reinitializing the HAL */
+//			char videoSize = ret.getChar("video-size");
+//			const char* videoSize = ret.get(CameraParameters::KEY_VIDEO_SIZE);
+//			LOGV("Setting Video Size here");
+//			ret.set(CameraParameters::KEY_PREFERRED_PREVIEW_SIZE_FOR_VIDEO, CameraParameters::KEY_VIDEO_SIZE);
             ret.set(CameraParameters::KEY_SUPPORTED_PREVIEW_FPS_RANGE, "15000,30000");
             ret.set(CameraParameters::KEY_PREVIEW_FPS_RANGE, "15000,30000");
             break;
@@ -525,20 +508,17 @@ MotoCameraWrapper::getParameters() const
     return ret;
 }
 
-status_t
-MotoCameraWrapper::sendCommand(int32_t cmd, int32_t arg1, int32_t arg2)
+status_t MotoCameraWrapper::sendCommand(int32_t cmd, int32_t arg1, int32_t arg2)
 {
     return mMotoInterface->sendCommand(cmd, arg1, arg2);
 }
 
-void
-MotoCameraWrapper::release()
+void MotoCameraWrapper::release()
 {
     mMotoInterface->release();
 }
 
-status_t
-MotoCameraWrapper::dump(int fd, const Vector<String16>& args) const
+status_t MotoCameraWrapper::dump(int fd, const Vector<String16>& args) const
 {
     return mMotoInterface->dump(fd, args);
 }
