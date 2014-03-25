@@ -347,14 +347,14 @@ def WriteFullOTAPackage(input_zip, output_zip):
 #    script.AssertOlderBuild(ts)
 
   script.Print(" ")
-  script.Print("     __    ____  _____  __  __  ____  ____   ")
-  script.Print("    (  )  (_  _)(  _  )(  )(  )(_  _)(  _ \  ")
-  script.Print("     )(__  _)(_  )(_)(  )(__)(  _)(_  )(_) ) ")
-  script.Print("    (____)(____)(___/\\)(______)(____)(____/ ")
-  script.Print("               ____   ____   ____            ")
-  script.Print("              (_  _) / ___) (  __)           ")
-  script.Print("               _)(_ ( (___  _\\ \\           ")
-  script.Print("              (____) \\____)(____)           ")
+  script.Print("         __    __ ______  __  __ __ ____       ")
+  script.Print("        / /   / // __  / / / / // // _  \      ")
+  script.Print("       / /__ / // /_/ / / /_/ // // /_) /      ")
+  script.Print("      /____//_//____^_\\/_____//_//_____/       ")
+  script.Print("                  __ _____ _____               ")
+  script.Print("                 / // ___//  __/               ")
+  script.Print("                / // /__ _\\  \\                 ")
+  script.Print("               /_//____//____/                 ")
   script.Print(" ")
 
 # kernel check...
@@ -384,7 +384,7 @@ def WriteFullOTAPackage(input_zip, output_zip):
   script.Print(" Mounting /system... ")
   script.Mount("/system")
 
-  script.ShowProgress(.50, 35)
+  script.ShowProgress(.50, 36)
   script.Print("  ")
   script.Print(" Installing /system... ")
   script.UnpackPackageDir("system", "/system")
@@ -404,6 +404,10 @@ def WriteFullOTAPackage(input_zip, output_zip):
   script.SetPermissions("/data/cron", 0, 0, 0755)
   script.SetPermissions("/data/cron/root", 0, 0, 0644)
 
+  script.SetPermissionsRecursive("/system/bootmenu", 0, 0, 0755, 0755)
+  script.SetPermissionsRecursive("/system/lib/modules", 0, 0, 0755, 0644)
+  script.SetPermissions("/system/bin/hijack", 0, 0, 0755)
+
   if OPTIONS.backuptool:
     script.RunBackup("restore")
 
@@ -411,7 +415,7 @@ def WriteFullOTAPackage(input_zip, output_zip):
 
   script.RunVerifyCachePartitionSize()
 
-  script.ShowProgress(.40, 30)
+  script.ShowProgress(.43, 36)
   script.Print("  ")
   script.Print(" Finishing Installation... ")
   script.Mount("/data")
