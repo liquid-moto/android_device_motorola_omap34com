@@ -95,7 +95,7 @@ PRODUCT_PACKAGES += \
 	lights.omap3 usbd ping6
 
 # Apps and bin
-PRODUCT_PACKAGES += su Apollo Torch Usb
+PRODUCT_PACKAGES += su Apollo CMFileManager Torch Usb
 
 # Live Wallpapers
 PRODUCT_PACKAGES += \
@@ -210,7 +210,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.com.google.gmsversion=2.3_r3 \
 	ro.kernel.android.ril=yes \
 	ro.product.multi_touch_enabled=true \
-	persist.sys.multitouch=2 \
+	persist.sys.multitouch=8 \
 	ro.product.use_charge_counter=1 \
 	ro.media.dec.jpeg.memcap=20000000 \
 	ro.setupwizard.enable_bypass=1 \

@@ -1,6 +1,6 @@
 #!/system/xbin/sh
 
-TOUCH_POINTS=2
+TOUCH_POINTS=`getprop persist.sys.multitouch`
 MODULE=/system/lib/modules/multitouch.ko
 
 if [ $TOUCH_POINTS != 2 ]; then
